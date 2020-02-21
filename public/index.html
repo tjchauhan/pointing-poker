@@ -3,10 +3,28 @@
     <head>
         <meta charset="utf-8">
         <title>Pointing Poker</title>
+        <link rel="stylesheet" href="/css/styles.css"/>
     </head>
     <body>
-        Pointing Poker App
+        <div class="centered-form__form">
+            <div style="margin:auto;text-align:center" >
+                <div class="form-field">
+                    <h3>What Would You Like To Do?</h3>
+                </div>
+                <form action="/joinRoom.html">
+                    <div class="form-field">
+                        <button>Join An Existing Room</button>
+                    </div>
+                </form>
+                <form action="/createRoom.html">
+                    <div class="form-field">
+                        <button>Create A New Room</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/poker.js"></script>
+        <script src="/js/join-room.js"></script>
     </body>
 </html>
