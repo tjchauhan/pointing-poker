@@ -1,10 +1,11 @@
+const getStoryPoints = require('../utils/utils')
+
 class Rooms {
     constructor () {
         this.rooms = []
     }
 
-    addRoom (name, passcode) {
-        var room = {name, passcode}
+    addRoom (room) {
         this.rooms.push(room)
         return room
     }
@@ -26,4 +27,34 @@ class Rooms {
     }
 }
 
-module.exports = {Rooms}
+class Room {
+    constructor (name, passcode) {
+        this.name = name
+        this.passcode = passcode
+        this.users = []
+        this.votes = []
+    }
+
+    addUser (user) {
+        this.users.push(user)
+    }
+
+    getUsers () {
+        return this.users
+    }
+
+    addVote (vote) {
+        this.votes.push(vote)
+    }
+
+    getPoints () {
+        var total = this.votes.reduce((a, b) => a + b, 0)
+        return getStoryPoints(total/this.votes.length)
+    }
+
+    clearVotes () {
+        this.votes.length = 0
+    }
+}
+
+module.exports = {Rooms, Room}

@@ -7,7 +7,7 @@ const $messages = document.querySelector('#messages')
 const messageTemplate = document.querySelector('#message-template').innerHTML
 
 // Options
-const { roomName } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+const { roomName, username } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 
 socket.on('sendPoints', (message) => {
     console.log(message.points)
@@ -22,7 +22,7 @@ socket.on('message', (message) => {
     console.log(message.text)
 })
 
-socket.emit('join', { roomName })
+socket.emit('join', { roomName, username })
 
 document.querySelector('#submitButton').addEventListener('click', () => {
     console.log('Clicked')
