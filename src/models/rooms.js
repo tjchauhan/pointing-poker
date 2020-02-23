@@ -1,5 +1,27 @@
 const getStoryPoints = require('../utils/utils')
 
+class Room {
+    constructor (name, passcode) {
+        this.name = name
+        this.passcode = passcode
+        this.votes = []
+    }
+
+    addVote (vote) {
+        this.votes.push(vote)
+    }
+
+    getPoints () {
+        var total = this.votes.reduce((a, b) => a + b, 0)
+        return getStoryPoints(total/this.votes.length)
+    }
+
+    clearVotes () {
+        this.votes.length = 0
+    }
+}
+
+// Class for an array of rooms
 class Rooms {
     constructor () {
         this.rooms = []
@@ -24,36 +46,6 @@ class Rooms {
 
     getRoomList () {
         return this.rooms
-    }
-}
-
-class Room {
-    constructor (name, passcode) {
-        this.name = name
-        this.passcode = passcode
-        this.users = []
-        this.votes = []
-    }
-
-    addUser (user) {
-        this.users.push(user)
-    }
-
-    getUsers () {
-        return this.users
-    }
-
-    addVote (vote) {
-        this.votes.push(vote)
-    }
-
-    getPoints () {
-        var total = this.votes.reduce((a, b) => a + b, 0)
-        return getStoryPoints(total/this.votes.length)
-    }
-
-    clearVotes () {
-        this.votes.length = 0
     }
 }
 

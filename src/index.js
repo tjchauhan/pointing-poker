@@ -2,8 +2,8 @@ const express = require('express')
 const http = require('http')
 const path = require('path')
 const socketio = require('socket.io')
-const {Users} = require('./models/users')
 const {Rooms, Room} = require('./models/rooms')
+const {Users} = require('./models/users')
 
 const app = express()
 const server = http.createServer(app)
@@ -17,15 +17,21 @@ app.use(express.static(publicDirectoryPath))
 var rooms = new Rooms()
 var users = new Users()
 
-// For testing purposes
-var room = new Room('test', 'abc')
-rooms.addRoom(room)
-
 io.on('connection', (socket) => {
     console.log('New websocket connection')
 
     socket.on('join', ({ roomName, username }) => {
         socket.join(roomName)
+        let room = rooms.getRoom(roomName)
+
+        if (!room) {
+
+            // TODO: Implement real passcodes
+            room = new Room(roomName, 'abc')
+            rooms.addRoom(room)
+        }
+
+        users.addUser(socket.id, username, roomName)
 
         socket.broadcast.to(roomName).emit('message', {
             text: `A new user has joined ${roomName}`
@@ -38,6 +44,9 @@ io.on('connection', (socket) => {
         console.log('submitted')
         console.log(message.value)
 
+        let user = users.getUser(socket.id)
+        let room = rooms.getRoom(user.room)
+
         room.addVote(message.value)
     })
 
@@ -46,13 +55,16 @@ io.on('connection', (socket) => {
     socket.on('finish', () => {
         console.log('finished')
 
+        let user = users.getUser(socket.id)
+        let room = rooms.getRoom(user.room)
+
         // Find the closest story point option to the average
         var closest = room.getPoints()
         room.clearVotes()
 
         console.log(closest)
 
-        io.emit('sendPoints', {
+        io.to(room.name).emit('sendPoints', {
             points: closest
         })
     })
