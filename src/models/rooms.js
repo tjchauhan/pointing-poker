@@ -1,9 +1,8 @@
 const getStoryPoints = require('../utils/utils')
 
 class Room {
-    constructor (name, passcode) {
+    constructor (name) {
         this.name = name
-        this.passcode = passcode
         this.votes = []
     }
 

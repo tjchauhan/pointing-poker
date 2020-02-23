@@ -26,8 +26,7 @@ io.on('connection', (socket) => {
 
         if (!room) {
 
-            // TODO: Implement real passcodes
-            room = new Room(roomName, 'abc')
+            room = new Room(roomName)
             rooms.addRoom(room)
         }
 
