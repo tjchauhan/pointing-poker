@@ -1,4 +1,5 @@
 const express = require('express')
+const getStoryPoints = require('./utils/utils')
 const http = require('http')
 const path = require('path')
 const socketio = require('socket.io')
@@ -14,10 +15,17 @@ app.use(express.static(publicDirectoryPath))
 
 let total = 0
 let votes = 0
-const points = [1, 2, 3, 5, 8, 13, 21]
 
 io.on('connection', (socket) => {
     console.log('New websocket connection')
+
+    socket.on('join', ({ roomName }) => {
+        socket.join(roomName)
+
+        socket.broadcast.to(roomName).emit('message', {
+            text: `A new user has joined ${roomName}`
+        })
+    })
 
     // When submit button is pressed.
     // Increase story point and votes total
@@ -38,15 +46,17 @@ io.on('connection', (socket) => {
         let mean = total/votes
 
         // Find the closest story point option to the average
-        var closest = points.reduce((prev, curr) => {
-          return (Math.abs(curr - mean) < Math.abs(prev - mean) ? curr : prev)
-        });
+        var closest = getStoryPoints(mean)
 
         console.log(closest)
 
         // Reset for new story
         total = 0
         votes = 0
+
+        io.emit('sendPoints', {
+            points: closest
+        })
     })
 })
 

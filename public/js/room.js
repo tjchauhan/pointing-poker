@@ -1,43 +1,38 @@
 const socket = io()
 
-let selection = 0
+// Elements
+const $messages = document.querySelector('#messages')
 
-document.querySelector('#point1').addEventListener('click', () => {
-    console.log('Clicked')
-    selection = 1
+// Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML
+
+// Options
+const { roomName } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+
+socket.on('sendPoints', (message) => {
+    console.log(message.points)
+
+    const html = Mustache.render(messageTemplate, {
+        points: message.points
+    })
+    $messages.insertAdjacentHTML('beforeend', html)
 })
-document.querySelector('#points2').addEventListener('click', () => {
-    console.log('Clicked')
-    selection = 2
+
+socket.on('message', (message) => {
+    console.log(message.text)
 })
-document.querySelector('#points3').addEventListener('click', () => {
-    console.log('Clicked')
-    selection = 3
-})
-document.querySelector('#points5').addEventListener('click', () => {
-    console.log('Clicked')
-    selection = 5
-})
-document.querySelector('#points8').addEventListener('click', () => {
-    console.log('Clicked')
-    selection = 8
-})
-document.querySelector('#points13').addEventListener('click', () => {
-    console.log('Clicked')
-    selection = 13
-})
-document.querySelector('#points21').addEventListener('click', () => {
-    console.log('Clicked')
-    selection = 21
-})
+
+socket.emit('join', { roomName })
 
 document.querySelector('#submitButton').addEventListener('click', () => {
     console.log('Clicked')
+
+    const points = Number(document.querySelector('input[name="points"]:checked').value)
+
     socket.emit('submit', {
-        value: selection
+        value: points
     })
 
-    selection = 0
 })
 
 document.querySelector('#finish').addEventListener('click', () => {
