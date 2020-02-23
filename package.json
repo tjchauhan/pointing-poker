@@ -1,0 +1,29 @@
+{
+    "name": "pointing-poker",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "dev": "nodemon src/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tjchauhan/pointing-poker.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/tjchauhan/pointing-poker/issues"
+    },
+    "homepage": "https://github.com/tjchauhan/pointing-poker#readme",
+    "dependencies": {
+        "bootstrap": "^4.4.1",
+        "express": "^4.17.1",
+        "socket.io": "^2.3.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.2"
+    }
+}
