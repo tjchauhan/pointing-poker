@@ -39,10 +39,19 @@
             <button style="background-color:grey; color:white; border:1px solid black" type="button" id="finish">Finish</button>
         </div>
 
+        <div>
+            <h3>Members</h3>
+            <ol id="members"></ol>
+        </div>
+
         <script id="message-template" type="text/html">
             <div>
-                <p>{{points}}</p>
+                <p>{{message}}</p>
             </div>
+        </script>
+
+        <script id="member-template" type="text/html">
+            <li id="{{member}}">{{member}}</li>
         </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
