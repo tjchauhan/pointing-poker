@@ -31,9 +31,14 @@ io.on('connection', (socket) => {
         }
 
         users.addUser(socket.id, username, roomName)
+        let userList = users.getUserList(roomName)
 
-        socket.broadcast.to(roomName).emit('message', {
-            text: `A new user has joined ${roomName}`
+        socket.emit('initialUserList', {
+            users: userList
+        })
+
+        socket.broadcast.to(roomName).emit('updateUserList', {
+            username: username
         })
     })
 
@@ -66,6 +71,16 @@ io.on('connection', (socket) => {
         io.to(room.name).emit('sendPoints', {
             points: closest
         })
+    })
+
+    socket.on('disconnect', () => {
+        var user = users.removeUser(socket.id)
+
+        if (user) {
+            io.to(user.room).emit('removeUser', {
+                username: user.name
+            })
+        }
     })
 })
 
